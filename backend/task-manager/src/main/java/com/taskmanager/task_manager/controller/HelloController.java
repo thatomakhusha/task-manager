@@ -1,4 +1,4 @@
-package com.taskmanager.task_manager;
+package com.taskmanager.task_manager.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
