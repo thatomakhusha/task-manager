@@ -4,13 +4,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import com.taskmanager.task_manager.dto.ApiResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleIllegalArgument(IllegalArgumentException exception) {
-        return exception.getMessage();
+    public ApiResponse handleIllegalArgument(IllegalArgumentException exception) {
+        return new ApiResponse(false, exception.getMessage());
     }
 }
