@@ -1,0 +1,9 @@
+package com.taskmanager.task_manager.repository;
+
+import com.taskmanager.task_manager.entity.Tag;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface TagRepository extends JpaRepository<Tag, Long>{
+    List<Tag> findByUserUserId(Long userId);
+}
