@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.security.NoSuchAlgorithmException;
 
+import com.taskmanager.task_manager.dto.ApiResponse;
+
 @RestController
 public class AuthController {
 
@@ -28,16 +30,16 @@ public class AuthController {
     }
 
     @PostMapping("/api/auth/register")
-    public String register(@Valid @RequestBody RegisterRequest request) {
+    public ApiResponse register(@Valid @RequestBody RegisterRequest request) {
         userService.registerUser(request);
-        return "Registration successful.";
+        return new ApiResponse(true, "Registration successful. Please check your email to verify your account.");
     }
 
     @GetMapping("/api/auth/verify-email")
-    public String verifyEmail(@RequestParam String token) throws NoSuchAlgorithmException {
+    public ApiResponse verifyEmail(@RequestParam String token) throws NoSuchAlgorithmException {
 
         emailVerificationService.verifyEmail(token);
 
-        return "Email verified successfully. You can now log in.";
+        return new ApiResponse(true, "Email verified successfully. You can now log in.");
     }
 }
