@@ -19,16 +19,20 @@ public class UserService {
     private final VerificationTokenService verificationTokenService;
     private final EmailVerificationRepository emailVerificationRepository;
 
+    private final EmailService emailService;
+
     public UserService(
             UserRepository userRepository,
             BCryptPasswordEncoder passwordEncoder,
             VerificationTokenService verificationTokenService,
-            EmailVerificationRepository emailVerificationRepository) {
+            EmailVerificationRepository emailVerificationRepository,
+            EmailService emailService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationTokenService = verificationTokenService;
         this.emailVerificationRepository = emailVerificationRepository;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -69,5 +73,6 @@ public class UserService {
         emailVerification.setExpiresAt(OffsetDateTime.now().plusHours(24));
 
         emailVerificationRepository.save(emailVerification);
+        emailService.sendVerificationEmail(user.getEmail(), verificationToken);
     }
 }
