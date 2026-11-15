@@ -1,5 +1,6 @@
 package com.taskmanager.task_manager.service;
 
+import com.taskmanager.task_manager.dto.RegisterRequest;
 import com.taskmanager.task_manager.entity.User;
 import org.springframework.stereotype.Service;
 import com.taskmanager.task_manager.repository.UserRepository;
@@ -15,18 +16,22 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerUser(String firstName, String lastName, String email, String password) {
-        if (userRepository.existsByEmail(email)) {
+    public void registerUser(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email is already registered.");
         }
 
-        String hashedPassword = passwordEncoder.encode(password);
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match.");
+        }
+
+        String hashedPassword = passwordEncoder.encode(request.getPassword());
 
         User user = new User();
 
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
         user.setPasswordHash(hashedPassword);
 
         userRepository.save(user);
